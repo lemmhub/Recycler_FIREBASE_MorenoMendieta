@@ -11,7 +11,7 @@ class RecyclerViewActivity : AppCompatActivity() {
 
     private lateinit var dbref: DatabaseReference
     private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userArrayList: ArrayList<Usuarios>
+    private lateinit var userArrayList: ArrayList<Horarios>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,20 +21,22 @@ class RecyclerViewActivity : AppCompatActivity() {
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.setHasFixedSize(true)
 
-        userArrayList = arrayListOf<Usuarios>()
-        getUsuario()
+        userArrayList = arrayListOf<Horarios>()
+        getHorarios()
 
     }
 
-    private fun getUsuario() {
+    private fun getHorarios() {
         dbref=FirebaseDatabase.getInstance().getReference("Usuarios")
         dbref.addValueEventListener(object: ValueEventListener{
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                println(snapshot)
+                println("PRueba de datos")
                 if(snapshot.exists()){
                     for (userSnapshot in snapshot.children){
-                        val usuario = userSnapshot.getValue(Usuarios::class.java)
-                        userArrayList.add(usuario!!) //no es nulo
+                        val horario = userSnapshot.getValue(Horarios::class.java)
+                        userArrayList.add(horario!!) //no es nulo
 
                     }
                     userRecyclerView.adapter = Adaptador(userArrayList)
